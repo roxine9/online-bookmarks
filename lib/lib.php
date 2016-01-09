@@ -440,8 +440,7 @@ function print_footer () {
 	echo "<br>\n";
 
 	echo '<a class="footer" href="http://www.frech.ch/online-bookmarks/" target="_blank">Online-Bookmarks</a>' . "\n";
-	@readfile (ABSOLUTE_PATH . "VERSION");
-	echo ' by Stefan Frech.';
+	echo ' ºº»¯×÷Õß£º<a class="footer" href="http://www.jackfans.com/" target="_blank">JackFans.com</a>.';
 	echo "</p>\n";
 }
 

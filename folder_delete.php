@@ -6,12 +6,12 @@ $noconfirm = set_get_noconfirm ();
 
 # the root folder cannot be deleted
 if ($folderid == "" || $folderid == 0){
-	message ("No Folder selected");	
+	message ("请选择要删除的文件夹");	
 }
 else if (!$settings['confirm_delete'] || $noconfirm) {
 	# lets do the deletion if the confirm variable is set to FALSE or after confirmation
 	require_once (ABSOLUTE_PATH . "folders.php");
-	$tree = new folder;
+	$tree = & new folder;
 	$tree->get_children ($folderid);
 
 	# we need $parent_folders for javascript code below.
@@ -88,17 +88,17 @@ else {
 
 	if ($mysql->query ($query)) {
 		if (mysql_num_rows ($mysql->result) == 0){
-			message ("Folder does not exist");
+			message ("文件夹不存在");
 		}
 		$row = mysql_fetch_object ($mysql->result);
 		?>
 
-		<h2 class="title">Delete this Folder?</h2>
+		<h2 class="title">确定删除文件夹？</h2>
 		<p><?php echo $row->public ? $folder_opened_public : $folder_opened; echo " " . $row->name; ?></p>
 
 		<form action="<?php echo $_SERVER['SCRIPT_NAME'] . "?folderid=" . $folderid . "&amp;noconfirm=1";?>" method="POST" name="fdelete">
-		<input type="submit" value=" OK ">
-		<input type="button" value=" Cancel " onClick="self.close()">
+		<input type="submit" value=" 确定 ">
+		<input type="button" value=" 取消 " onClick="self.close()">
 		</form>
 
 		<?php

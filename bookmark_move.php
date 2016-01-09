@@ -7,14 +7,14 @@ $bmlist = set_post_num_list ('bmlist');
 if (count ($bmlist) == 0) {
 	?>
 
-	<h2 class="title">Move bookmarks to:</h2>
+	<h2 class="title">移动书签到:</h2>
 	<form action="<?php echo $_SERVER['SCRIPT_NAME'] . "?folderid=" . $folderid; ?>" method="POST" name="bookmarksmove">
 
 				<div style="width:100%; height:330px; overflow:auto;">
 
 					<?php
 					require_once (ABSOLUTE_PATH . "folders.php");
-					$tree = new folder;
+					$tree = & new folder;
 					$tree->make_tree (0);
 					$tree->print_tree ();
 					?>
@@ -22,9 +22,9 @@ if (count ($bmlist) == 0) {
 				</div>
 				<br>
 				<input type="hidden" name="bmlist">
-				<input type="submit" value=" OK ">
-				<input type="button" value=" Cancel " onClick="self.close()">
-				<input type="button" value=" New Folder " onClick="self.location.href='javascript:foldernew(<?php echo $folderid; ?>)'">
+				<input type="submit" value=" 确定 ">
+				<input type="button" value=" 取消 " onClick="self.close()">
+				<input type="button" value=" 新建文件夹 " onClick="self.location.href='javascript:foldernew(<?php echo $folderid; ?>)'">
 
 	</form>
 
@@ -35,7 +35,7 @@ if (count ($bmlist) == 0) {
 	<?php
 }
 else if ($folderid == '') {
-	message ('No destination Folder selected.');
+	message ('请选择目标文件夹');
 }
 else {
 	$query = sprintf ("UPDATE bookmark SET childof='%d' WHERE id IN (%s) AND user='%s'",
@@ -44,7 +44,7 @@ else {
 		$mysql->escape ($username));
 
 	if ($mysql->query ($query)) {
-		echo "Bookmarks moved<br>\n";
+		echo "书签移动成功<br>\n";
 		echo '<script language="JavaScript">reloadclose();</script>';
 	}
 	else {

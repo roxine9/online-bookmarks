@@ -13,9 +13,9 @@ else {
 	require_once (ABSOLUTE_PATH . "config/config.php");
 }
 require_once (ABSOLUTE_PATH . "lib/mysql.php");
-$mysql = new mysql;
+$mysql = & new mysql;
 require_once (ABSOLUTE_PATH . "lib/auth.php");
-$auth = new Auth;
+$auth = & new Auth;
 require_once (ABSOLUTE_PATH . "lib/lib.php");
 require_once (ABSOLUTE_PATH . "lib/login.php");
 
@@ -24,8 +24,8 @@ require_once (ABSOLUTE_PATH . "lib/login.php");
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>Online-Bookmarks</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>网络收藏夹 - JackFans.COM</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 		<meta http-equiv="Pragma" content="No-cache">
 		<link rel="stylesheet" type="text/css" href="./style.css">
 		<link rel="shortcut icon" href="favicon.ico">
@@ -36,7 +36,7 @@ require_once (ABSOLUTE_PATH . "lib/login.php");
 <?php
 
 if (is_file (ABSOLUTE_PATH . "install.php")) {
-	message ('Remove "install.php" before using Online-Bookmarks.');
+	message ('正式使用程序请先移除"install.php"！');
 }
 
 if ($display_login_form) {

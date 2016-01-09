@@ -8,12 +8,12 @@ $public = set_post_bool_var ("public", false);
 if ($foldername == "") {
 	?>
 	
-	<h2 class="title">New Folder</h2>
+	<h2 class="title">新建文件夹</h2>
 	<form action="<?php echo $_SERVER['SCRIPT_NAME'] . "?folderid=" . $folderid; ?>" id="fnew" method="POST">
 	<p><input type=text name="foldername" size="50" value="<?php echo $foldername; ?>"></p>
-	<p><input type="checkbox" name="public"> Public</p>
-	<input type="submit" value=" OK ">
-	<input type="button" value=" Cancel " onClick="self.close()">
+	<p><input type="checkbox" name="public">共享</p>
+	<input type="submit" value="确定">
+	<input type="button" value="取消" onClick="self.close()">
 	</form>
 	<script>
 	this.focus();
@@ -29,7 +29,7 @@ else {
 		$mysql->escape ($public),
 		$mysql->escape ($username));
 	if ($mysql->query ($query)) {
-		echo "Folder successfully created<br>\n";
+		echo "新建文件夹成功<br>\n";
 		echo '<script language="JavaScript">reloadclose();</script>';
 	}
 	else {

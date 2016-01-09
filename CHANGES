@@ -31,10 +31,3 @@
 
 12.08.2008, Version 0.8.14_beta
 - Getting rid of dangeros $GLOBALS in export.php, import.php and folders.php.
-
-25.04.2014, Version 0.8.15_beta
-- Fixed some minor bug, such as warnings about missing default time zone setting
-  and wrong MySQL syntax in install.php script.
-- Get rid of deprecated ampersand in php code. See 
-  https://php.net/manual/en/migration53.deprecated.php
-  for details.

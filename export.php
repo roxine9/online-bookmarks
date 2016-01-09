@@ -15,10 +15,10 @@ if (!isset ($_POST['browser']) || $_POST['browser'] == "" ||
 	$folderid = set_get_folderid ();
 
 	# get the browser type for default setting below if possible
-        if(preg_match("/opera/i", $_SERVER['HTTP_USER_AGENT'])){
+	if( eregi ("opera", $_SERVER['HTTP_USER_AGENT'])) {
 		$default_browser = "opera";
 	}
-	else if (preg_match("/msie/i", $_SERVER['HTTP_USER_AGENT'])) {
+	else if (eregi ("msie", $_SERVER['HTTP_USER_AGENT'])) {
 		$default_browser = "IE";
 	}
 	else{
@@ -26,28 +26,28 @@ if (!isset ($_POST['browser']) || $_POST['browser'] == "" ||
 	}
 ?>
 
-<h1 id="caption">Export Bookmarks</h1>
+<h1 id="caption">导出书签</h1>
 
 <!-- Wrapper starts here. -->
 <div style="min-width: <?php echo 230 + $settings['column_width_folder']; ?>px;">
 	<!-- Menu starts here. -->
 	<div id="menu">
-		<h2 class="nav">Bookmarks</h2>
+		<h2 class="nav">书签页</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="./index.php">我的书签</a></li>
+		  <li><a href="./shared.php">共享书签</a></li>
 		</ul>
 	
-		<h2 class="nav">Tools</h2>
+		<h2 class="nav">工具栏</h2>
 		<ul class="nav">
 			<?php if (admin_only ()) { ?>
-			<li><a href="./admin.php">Admin</a></li>
+			<li><a href="./admin.php">管理员</a></li>
 			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
+			<li><a href="./import.php">导入书签</a></li>
+			<li><a href="./export.php">导出书签</a></li>
 			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
+			<li><a href="./settings.php">系统设置</a></li>
+			<li><a href="./index.php?logout=1">退出</a></li>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -60,19 +60,19 @@ if (!isset ($_POST['browser']) || $_POST['browser'] == "" ||
   <table border="0">
     <tr>
       <td>
-        Export Bookmarks to Browser:
+        选择浏览器类型：
       </td>
       <td width="<?php echo $column_width_folder?>">
         <select name="browser">
-          <option value="IE"<?php if ($default_browser == "IE") {echo " selected"; } ?>>Internet Explorer</option>
-          <option value="netscape"<?php if ($default_browser == "netscape") {echo " selected"; } ?>>Netscape / Mozilla</option>
-          <option value="opera"<?php if ($default_browser == "opera") {echo " selected"; } ?>>Opera .adr</option>
+          <option value="IE"<?php if ($default_browser == "IE") {echo " selected"; } ?>>IE 浏览器</option>
+          <option value="netscape"<?php if ($default_browser == "netscape") {echo " selected"; } ?>>Netscape / Mozilla 浏览器</option>
+          <option value="opera"<?php if ($default_browser == "opera") {echo " selected"; } ?>>Opera 浏览器</option>
         </select>
       </td>
     </tr>
 
 	<tr>
-		<td>Character encoding</td>
+		<td>选择字符编码：</td>
 		<td>
 			<select name="charset">
 			<?php
@@ -89,14 +89,14 @@ if (!isset ($_POST['browser']) || $_POST['browser'] == "" ||
 
     <tr>
       <td>
-        Folder to export:
+        选择导出书签页：
       </td>
       <td>
 	<div style="width:<?php echo $column_width_folder; ?>; height:350px; overflow:auto;">
 
 	<?php
 	require_once (ABSOLUTE_PATH . "folders.php");
-	$tree = new folder;
+	$tree = & new folder;
 	$tree->make_tree (0);
 	$tree->print_tree ();
 	?>
@@ -108,8 +108,8 @@ if (!isset ($_POST['browser']) || $_POST['browser'] == "" ||
     <tr>
       <td>
         <input type="hidden" name="folder" value="<?php echo $folderid; ?>">
-        <input type="submit" value="Export">
-        <input type="button" value=" Cancel " onClick="self.location.href='./index.php'">
+        <input type="submit" value="确认">
+        <input type="button" value="取消" onClick="self.location.href='./index.php'">
       </td>
       <td>
       </td>
@@ -135,9 +135,9 @@ else{
 	require_once (ABSOLUTE_PATH . "lib/webstart.php");
 	require_once (ABSOLUTE_PATH . "config/config.php");
 	require_once (ABSOLUTE_PATH . "lib/mysql.php");
-	$mysql = new mysql;
+	$mysql = & new mysql;
 	require_once (ABSOLUTE_PATH . "lib/auth.php");
-	$auth = new Auth;
+	$auth = & new Auth;
 	require_once (ABSOLUTE_PATH . "lib/lib.php");
 	logged_in_only ();
 	require_once (ABSOLUTE_PATH . "lib/login.php");
@@ -168,14 +168,14 @@ else{
 		echo "<TITLE>Bookmarks</TITLE>\n";
 		echo "<H1>Bookmarks</H1>\n";
 		echo "<DL><p>\n";
-		$export = new export;
+		$export = & new export;
 		$export->make_tree ($folderid);
 		echo "</DL><p>\n";
 	}
 	else if ($browser == "opera") {
 		echo "Opera Hotlist version 2.0\n";
 		echo "Options: encoding = utf8, version=3\n\n";
-		$export = new export;
+		$export = & new export;
 		$export->make_tree ($folderid);
 	}
 }
@@ -185,7 +185,7 @@ class export {
 		global $settings, $browser;
 		# collect the folder data
 		require_once (ABSOLUTE_PATH . "folders.php");
-		$this->tree = new folder;
+		$this->tree = & new folder;
 		$this->tree->folders[0] = array ('id' => 0, 'childof' => null, 'name' => $settings['root_folder_name']);
 
 		global $username, $mysql;

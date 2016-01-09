@@ -24,7 +24,7 @@ if (count ($bmlist) > 1) {
 			$query_string = "?bmlist=" . implode ("_", $bmlist);
 			?>
 
-			<h2 class="title">Change public state:</h2>
+			<h2 class="title">是否共享:</h2>
 			<div style="width:100%; height:330px; overflow:auto;">
 
 			<?php
@@ -52,8 +52,8 @@ if (count ($bmlist) > 1) {
 			<form action="<?php echo $_SERVER['SCRIPT_NAME'] . $query_string; ?>" method="POST" name="bmedit">
 			<p>
 				<select name="public">
-				<option value="1">public</option>
-				<option value="0">private</option>
+				<option value="1">共享</option>
+				<option value="0">私人</option>
 				</select>
 			</p>
 			<input type="submit" value=" OK ">
@@ -85,7 +85,7 @@ if (count ($bmlist) > 1) {
 
 }
 else if (count ($bmlist) < 1) {
-	message ("No Bookmark to edit.");
+	message ("请先选择要编辑的书签");
 }
 else if ($post_title == "" || $post_url == "" || $post_icon) {
 	$query = sprintf ("SELECT title, url, description, childof, id, favicon, public
@@ -102,7 +102,7 @@ else if ($post_title == "" || $post_url == "" || $post_icon) {
 		else {
 			$row = mysql_fetch_object ($mysql->result);
 			require_once (ABSOLUTE_PATH . "folders.php");
-			$tree = new folder;
+			$tree = & new folder;
 			$query_string = "?expand=" . implode(",", $tree->get_path_to_root ($row->childof)) . "&amp;folderid=" . $row->childof;
 			$path = $tree->print_path ($row->childof);
 			if ($post_icon && $settings['show_bookmark_icon']) {
@@ -110,7 +110,7 @@ else if ($post_title == "" || $post_url == "" || $post_icon) {
 					@unlink ($row->favicon);
 				}
 				require_once (ABSOLUTE_PATH . "favicon.php");
-				$favicon = new favicon ($post_url);
+				$favicon = & new favicon ($post_url);
 				if (isset ($favicon->favicon)) {
 					$icon = '<img src="' . $favicon->favicon . '" width="16" height="16" alt="">';
 					$query = sprintf ("UPDATE bookmark SET favicon='%s' WHERE user='%s' AND id='%d'",
@@ -139,23 +139,23 @@ else if ($post_title == "" || $post_url == "" || $post_icon) {
 
 ?>
 
-	<h2 class="title">Edit Bookmark</h2>
+	<h2 class="title">编辑书签页</h2>
 	<form action="<?php echo $_SERVER['SCRIPT_NAME'] . "?bmlist=" . $row->id; ?>" id="bmedit" method="POST">
-	<p>Title<br>
+	<p>标题<br>
 	<input type=text name="title" size="50" value="<?php echo $row->title; ?>"> <?php echo $settings['show_bookmark_icon'] ? $icon : ""; ?></p>
-	<p>URL<br>
+	<p>链接<br>
 	<input type=text name="url" size="50" value="<?php echo $row->url; ?>">
-	<p>Description<br>
+	<p>简介<br>
 	<textarea name="description" cols="50" rows="8"><?php echo $row->description; ?></textarea></p>
-	<p><input type="button" value="Select folder" onClick="window.childof=document.forms['bmedit'].childof; window.path=document.forms['bmedit'].path; selectfolder('<?php echo $query_string; ?>')"><br>
+	<p><input type="button" value="选择存放的文件夹" onClick="window.childof=document.forms['bmedit'].childof; window.path=document.forms['bmedit'].path; selectfolder('<?php echo $query_string; ?>')"><br>
 	<input type="text" name="path" value="<?php echo $path; ?>" size="50" readonly>
 	<input type="text" name="childof" value="<?php echo $row->childof; ?>" size="1" class="invisible" readonly></p>
-	<p>Tags<br>
-	<input type=text name="tags" size="50" value="Not yet working"></p>
-	<input type="submit" value=" OK ">
-	<input type="button" value=" Cancel " onClick="self.close()">
-	<?php if ($settings['show_bookmark_icon']) : ?><input type="submit" value="Refresh Icon" name="favicon"><?php endif; ?>
-	Public <input type="checkbox" name="public" <?php echo $row->public ? "checked" : "";?>>
+	<p>标签<br>
+	<input type=text name="tags" size="50" value=""></p>
+	<input type="submit" value=" 确定 ">
+	<input type="button" value=" 取消 " onClick="self.close()">
+	<?php if ($settings['show_bookmark_icon']) : ?><input type="submit" value="刷新图标" name="favicon"><?php endif; ?>
+	共享 <input type="checkbox" name="public" <?php echo $row->public ? "checked" : "";?>>
 	</form>
 	<script>
 	this.focus();

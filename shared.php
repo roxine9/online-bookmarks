@@ -26,25 +26,25 @@ $order = set_get_order ();
 <div style="min-width: <?php echo 230 + $settings['column_width_folder']; ?>px;">
 	<!-- Menu starts here. -->
 	<div id="menu">
-		<h2 class="nav">Bookmarks</h2>
+		<h2 class="nav">书签页</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="./index.php">我的书签</a></li>
+		  <li><a href="./shared.php">共享书签</a></li>
 		</ul>
 	
-		<h2 class="nav">Tools</h2>
+		<h2 class="nav">工具栏</h2>
 		<ul class="nav">
 			<?php if (isset ($_SESSION['logged_in']) && $_SESSION['logged_in']) { ?>
 			<?php if (admin_only ()) { ?>
-			<li><a href="./admin.php">Admin</a></li>
+			<li><a href="./admin.php">管理员</a></li>
 			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
+			<li><a href="./import.php">导入书签</a></li>
+			<li><a href="./export.php">导出书签</a></li>
 			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
+			<li><a href="./settings.php">系统设置</a></li>
+			<li><a href="./index.php?logout=1">退出</a></li>
 			<?php } else { ?>
-			<li><a href="./index.php">Login</a></li>
+			<li><a href="./index.php">登录</a></li>
 			<?php } ?>
 		</ul>
 	<!-- Menu ends here. -->
@@ -64,7 +64,7 @@ if (isset ($_GET['user']) && check_username ($user)) {
 
 	<?php
 	require_once (ABSOLUTE_PATH . "folders.php");
-	$tree = new folder ($user);
+	$tree = & new folder ($user);
 	$tree->make_tree (0);
 	$tree->print_tree ();
 	?>

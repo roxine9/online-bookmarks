@@ -7,7 +7,7 @@ $public = set_post_bool_var ("public", false);
 $inherit = set_post_bool_var ("inherit", false);
 
 if ($folderid == "" || $folderid == "0"){
-	message ("No Folder selected");
+	message ("请选择要编辑的文件夹");
 }
 else if ($foldername == "") {
 	$query = sprintf ("SELECT name, public FROM folder WHERE id='%d' AND user='%s' AND deleted!='1'", 
@@ -19,7 +19,7 @@ else if ($foldername == "") {
 			$row = mysql_fetch_object ($mysql->result);
 		}
 		else {
-			message ("No Folder to edit.");
+			message ("没有文件夹");
 		}
 	}
 	else {
@@ -27,13 +27,13 @@ else if ($foldername == "") {
 	}
 	?>
 
-	<h2 class="title">Edit Folder</h2>
+	<h2 class="title">编辑文件夹</h2>
 	<form action="<?php echo $_SERVER['SCRIPT_NAME'] . "?folderid=" . $folderid; ?>" id="fedit" method="POST">
 	<p><input type=text name="foldername" size="50" value="<?php echo $row->name; ?>"> <?php echo $row->public ? $folder_opened_public : $folder_opened; ?></p>
-	<p><input type="checkbox" name="public" <?php if ($row->public) {echo "checked";} ?>> Public</p>
-	<p><input type="checkbox" name="inherit"> Inherit Public Status to all Subfolders and Bookmarks</p>
-	<input type="submit" value=" OK ">
-	<input type="button" value=" Cancel " onClick="self.close()">
+	<p><input type="checkbox" name="public" <?php if ($row->public) {echo "checked";} ?>> 共享</p>
+	<p><input type="checkbox" name="inherit"> 下属子目录及书签页是否同样选择共享</p>
+	<input type="submit" value=" 确定 ">
+	<input type="button" value=" 取消 " onClick="self.close()">
 	</form>
 	<script>
 	this.focus();
@@ -53,7 +53,7 @@ else {
 	if ($mysql->query ($query)) {
 		if ($inherit) {
 			require_once (ABSOLUTE_PATH . "folders.php");
-			$tree = new folder;
+			$tree = & new folder;
 			$tree->get_children ($folderid);
 			if (count ($tree->get_children) > 0) {
 				$sub_folders = implode (",", $tree->get_children);

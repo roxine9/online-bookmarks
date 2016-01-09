@@ -5,7 +5,7 @@ logged_in_only ();
 $bmlist = set_get_num_list ('bmlist');
 
 if (count ($bmlist) == 0){
-	echo "No Bookmarks selected";	
+	echo "请先选定要删除的书签页";	
 }
 else if (!$settings['confirm_delete'] || set_get_noconfirm ()){
 	$bmlist = implode (",", $bmlist);
@@ -13,7 +13,7 @@ else if (!$settings['confirm_delete'] || set_get_noconfirm ()){
 		$mysql->escape ($bmlist),
 		$mysql->escape ($username));
 	if ($mysql->query ($query)) {
-		echo "Bookmarks successfully deleted<br>\n";
+		echo "书签页删除成功<br>\n";
 		echo '<script language="JavaScript">reloadclose();</script>';
 	}
 	else {
@@ -30,7 +30,7 @@ else {
 		$query_string = "?bmlist=" . implode ("_", $bmlist) . "&noconfirm=1";
 		?>
 	
-		<h2 class="title">Delete these Bookmarks?</h2>
+		<h2 class="title">确定要删除这些书签吗？</h2>
 		<div style="width:100%; height:330px; overflow:auto;">
 	
 		<?php
@@ -56,8 +56,8 @@ else {
 	
 		<br>
 		<form action="<?php echo $_SERVER['SCRIPT_NAME'] . $query_string; ?>" method="POST" name="bmdelete">
-		<input type="submit" value=" OK ">
-		<input type="button" value=" Cancel " onClick="self.close()">
+		<input type="submit" value=" 确定 ">
+		<input type="button" value=" 取消 " onClick="self.close()">
 		</form>
 	
 		<?php

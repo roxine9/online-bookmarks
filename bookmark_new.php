@@ -13,7 +13,7 @@ $post_childof		= set_post_childof ();
 $post_public		= set_post_bool_var ("public", false);
 
 require_once (ABSOLUTE_PATH . "folders.php");
-$tree = new folder;
+$tree = & new folder;
 $query_string = "?expand=" . implode(",", $tree->get_path_to_root ($post_childof)) . "&amp;folderid=" . $post_childof;
 
 if ($post_title == '' || $post_url == '') {
@@ -42,22 +42,22 @@ if ($post_title == '' || $post_url == '') {
 
 ?>
 
-	<h2 class="title">New Bookmark</h2>
+	<h2 class="title">新建书签页</h2>
 	<form action="<?php echo $_SERVER['SCRIPT_NAME'] . "?folderid=" . $folderid; ?>" id="bmnew" method="POST">
-	<p>Title<br>
+	<p>标题<br>
 	<input type=text name="title" size="50" value="<?php echo $title; ?>"></p>
-	<p>URL<br>
+	<p>链接<br>
 	<input type=text name="url" size="50" value="<?php echo $url; ?>"></p>
-	<p>Description<br>
+	<p>简介<br>
 	<textarea name="description" cols="50" rows="8"><?php echo $post_description; ?></textarea></p>
-	<p><input type="button" value="Select folder" onClick="window.childof=document.forms['bmnew'].childof; window.path=document.forms['bmnew'].path; selectfolder('<?php echo $query_string; ?>')"><br>
+	<p><input type="button" value="选择存放的文件夹" onClick="window.childof=document.forms['bmnew'].childof; window.path=document.forms['bmnew'].path; selectfolder('<?php echo $query_string; ?>')"><br>
 	<input type="text" name="path" value="<?php echo $path; ?>" size="50" readonly>
 	<input type="text" name="childof" value="<?php echo $folderid; ?>" size="1" class="invisible" readonly></p>
-	<p>Tags<br>
-	<input type=text name="tags" size="50" value="Not yet working"></p>
-	<input type="submit" value=" OK ">
-	<input type="button" value=" Cancel " onClick="<?php echo $js_onclick; ?>">
-	Public <input type="checkbox" name="public" <?php echo $post_public ? "checked" : "";?>>
+	<p>标签<br>
+	<input type=text name="tags" size="50" value=""></p>
+	<input type="submit" value=" 确定 ">
+	<input type="button" value=" 取消 " onClick="<?php echo $js_onclick; ?>">
+	共享 <input type="checkbox" name="public" <?php echo $post_public ? "checked" : "";?>>
 	</form>
 	<script>
 	this.focus();
@@ -91,7 +91,7 @@ else {
 	# favicon is not that important.
 	if ($settings['show_bookmark_icon']) {
 		require_once (ABSOLUTE_PATH . "favicon.php");
-		$favicon = new favicon ($post_url);
+		$favicon = & new favicon ($post_url);
 		if (isset ($favicon->favicon)) {
 			$query = sprintf ("UPDATE bookmark set favicon='%s' WHERE user='%s' AND id='%d'", 
 				$mysql->escape ($favicon->favicon),

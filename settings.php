@@ -108,28 +108,28 @@ function check_date_format () {
 
 ?>
 
-<h1 id="caption">My Settings</h1>
+<h1 id="caption">系统设置</h1>
 
 <!-- Wrapper starts here. -->
 <div style="min-width: <?php echo 230 + $settings['column_width_folder']; ?>px;">
 	<!-- Menu starts here. -->
 	<div id="menu">
-		<h2 class="nav">Bookmarks</h2>
+		<h2 class="nav">书签页</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="./index.php">我的书签</a></li>
+		  <li><a href="./shared.php">共享书签</a></li>
 		</ul>
 	
-		<h2 class="nav">Tools</h2>
+		<h2 class="nav">工具栏</h2>
 		<ul class="nav">
 			<?php if (admin_only ()) { ?>
-			<li><a href="./admin.php">Admin</a></li>
+			<li><a href="./admin.php">管理员</a></li>
 			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
+			<li><a href="./import.php">导入书签</a></li>
+			<li><a href="./export.php">导出书签</a></li>
 			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
+			<li><a href="./settings.php">系统设置</a></li>
+			<li><a href="./index.php?logout=1">退出</a></li>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -143,70 +143,70 @@ function check_date_format () {
 			<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="POST">
 			<table>
 				<tr>
-					<td>Name of the root folder</td>
+					<td>根目录名称</td>
 					<td>
 						<input type="text" name="foldername" value="<?php echo $settings['root_folder_name']; ?>">
 					</td>
 				</tr>
 			
 				<tr>
-					<td>The width in pixels of the folder column<br>100 - 800 pixel</td>
+					<td>文件夹宽度<br>100 - 800 像素</td>
 					<td>
 						<input type="text" name="settings_column_width_folder" value="<?php echo $settings['column_width_folder']; ?>" size="5">
 					</td>
 				</tr>
 			
 				<tr>
-					<td>The width in pixels of the bookmark column<br>100 - 800 pixel or 0 for 100%</td>
+					<td>书签页宽度<br>100 - 800 像素</td>
 					<td>
 						<input type="text" name="settings_column_width_bookmark" value="<?php echo $settings['column_width_bookmark']; ?>" size="5">
 					</td>
 				</tr>
 			
 				<tr>
-					<td>The height in pixels of the main table<br>100 - 800 pixel</td>
+					<td>主框架高度<br>100 - 800 pixel</td>
 					<td>
 						<input type="text" name="settings_table_height" value="<?php echo $settings['table_height']; ?>" size="5">
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Confirm deletions of bookmarks an folders</td>
+					<td>提示确实删除书签或文件夹</td>
 					<td>
 						<input type="checkbox" name="settings_confirm_delete" <?php if ($settings['confirm_delete'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Open a new window when clicking a bookmark</td>
+					<td>在新窗口中打开书签</td>
 					<td>
 						<input type="checkbox" name="settings_open_new_window" <?php if ($settings['open_new_window'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Show the bookmarks description in the overview</td>
+					<td>在书签下方显示简介</td>
 					<td>
 						<input type="checkbox" name="settings_show_bookmark_description" <?php if ($settings['show_bookmark_description'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Enable favicon support: <?php echo $bookmark_image; ?></td>
+					<td>取消图标支持: <?php echo $bookmark_image; ?></td>
 					<td>
 						<input type="checkbox" name="settings_show_bookmark_icon" <?php if ($settings['show_bookmark_icon'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Show the column with the change date: <?php echo date ($date_formats[$settings['date_format']]); ?></td>
+					<td>显示书签的修改时间: <?php echo date ($date_formats[$settings['date_format']]); ?></td>
 					<td>
 						<input type="checkbox" name="settings_show_column_date" <?php if ($settings['show_column_date'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Date format:</td>
+					<td>日期格式:</td>
 					<td>
 						<select name="settings_date_format">
 							<?php
@@ -221,56 +221,56 @@ function check_date_format () {
 				</tr>
 
 				<tr>
-					<td>Show the private/public column: <span class="private">private</span></td>
+					<td>显示“共享/私人”属性: <span class="private">private</span></td>
 					<td>
 						<input type="checkbox" name="settings_show_public" <?php if ($settings['show_public'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 
 				<tr>
-					<td>Show the column to edit a bookmark: <?php echo $edit_image; ?></td>
+					<td>显示编辑书签: <?php echo $edit_image; ?></td>
 					<td>
 						<input type="checkbox" name="settings_show_column_edit" <?php if ($settings['show_column_edit'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Show the column to move a bookmark: <?php echo $move_image; ?></td>
+					<td>显示移动书签: <?php echo $move_image; ?></td>
 					<td>
 						<input type="checkbox" name="settings_show_column_move" <?php if ($settings['show_column_move'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Show the column to delete a bookmark: <?php echo $delete_image; ?></td>
+					<td>显示删除书签: <?php echo $delete_image; ?></td>
 					<td>
 						<input type="checkbox" name="settings_show_column_delete" <?php if ($settings['show_column_delete'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Collapse tree when clicking on folder icon: <?php echo $minus . $folder_opened; ?></td>
+					<td>点击树状图标时折叠书签: <?php echo $minus . $folder_opened; ?></td>
 					<td>
 						<input type="checkbox" name="settings_fast_folder_minus" <?php if ($settings['fast_folder_minus'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Expand tree when clicking on folder icon: <?php echo $plus . $folder_opened; ?></td>
+					<td>点击树状图标时展开书签: <?php echo $plus . $folder_opened; ?></td>
 					<td>
 						<input type="checkbox" name="settings_fast_folder_plus" <?php if ($settings['fast_folder_plus'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Select folder when clicking on plus/minus symbol</td>
+					<td>点击“+/-”时选择书签</td>
 					<td>
 						<input type="checkbox" name="settings_fast_symbol" <?php if ($settings['fast_symbol'] == 1) {echo "checked";}?>>
 					</td>
 				</tr>
 			
 				<tr>
-					<td>Allways open just one tree</td>
+					<td>打开一个树状图</td>
 					<td>
 						<input type="checkbox" name="settings_simple_tree_mode" <?php if ($settings['simple_tree_mode'] == 1) {echo "checked";}?>>
 					</td>
@@ -279,7 +279,7 @@ function check_date_format () {
 				<tr>
 					<td></td>
 					<td>
-						<input type="submit" value="Apply" name="settings_apply"> <?php echo $message; ?>
+						<input type="submit" value="确定" name="settings_apply"> <?php echo $message; ?>
 					</td>
 				</tr>
 			</table>

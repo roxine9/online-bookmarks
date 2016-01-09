@@ -14,28 +14,28 @@ $message1 = '';
 $message2 = '';
 ?>
 
-<h1 id="caption">Admin Page</h1>
+<h1 id="caption">管理员界面</h1>
 
 <!-- Wrapper starts here. -->
 <div style="min-width: <?php echo 230 + $settings['column_width_folder']; ?>px;">
 	<!-- Menu starts here. -->
 	<div id="menu">
-		<h2 class="nav">Bookmarks</h2>
+		<h2 class="nav">书签页</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="./index.php">我的书签</a></li>
+		  <li><a href="./shared.php">共享书签</a></li>
 		</ul>
 	
-		<h2 class="nav">Tools</h2>
+		<h2 class="nav">工具栏</h2>
 		<ul class="nav">
 			<?php if (admin_only ()) { ?>
-			<li><a href="./admin.php">Admin</a></li>
+			<li><a href="./admin.php">管理员</a></li>
 			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
+			<li><a href="./import.php">导入书签</a></li>
+			<li><a href="./export.php">导出书签</a></li>
 			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
+			<li><a href="./settings.php">系统设置</a></li>
+			<li><a href="./index.php?logout=1">退出</a></li>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -45,15 +45,15 @@ $message2 = '';
 	
 	<?php
 	if (!admin_only ()) {
-		message ("You are not an Admin.");
+		message ("你不是管理员.");
 	}
 	
 	if ($create == 'Create') {
 		if ($new_username == '' || $new_password == '') {
-			$message1 = 'Username and Password fields must not be empty.';
+			$message1 = '用户名和密码不能为空.';
 		}
 		else if (check_username ($new_username)) {
-			$message1 = 'User already exists.';
+			$message1 = '用户已存在.';
 		}
 		else {
 			$query = sprintf ("INSERT INTO user (username, password, admin) VALUES ('%s', md5('%s'), '%d')", 
@@ -62,7 +62,7 @@ $message2 = '';
 					$mysql->escape ($new_admin));
 	
 			if ($mysql->query ($query)) {
-				$message1 = "User $new_username created.";
+				$message1 = "用户名 $new_username 已建立.";
 			}
 			else {
 				message ($mysql->error);
@@ -73,12 +73,12 @@ $message2 = '';
 	?>
 	
 				<div style="border: 1px solid #bbb; margin: 10px; padding: 10px;">
-					<h2 class="caption">Create User</h2>
+					<h2 class="caption">新用户</h2>
 	
 					<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="POST">
 						<table>
 							<tr>
-								<td>Username:
+								<td>用户名:
 								</td>
 								<td>
 									<input type="text" name="new_username">
@@ -86,7 +86,7 @@ $message2 = '';
 							</tr>
 	
 							<tr>
-								<td>Password:
+								<td>密  码:
 								</td>
 								<td>
 									<input type="password" name="new_password">
@@ -94,7 +94,7 @@ $message2 = '';
 							</tr>
 	
 							<tr>
-								<td>Admin:
+								<td>是否加入管理员:
 								</td>
 								<td>
 									<input type="checkbox" name="new_admin" value="1">
@@ -105,7 +105,7 @@ $message2 = '';
 								<td>
 								</td>
 								<td>
-									<input type="submit" name="create" value="Create"> <?php echo $message1; ?>
+									<input type="submit" name="create" value="确定"> <?php echo $message1; ?>
 								</td>
 							</tr>
 						</table>
@@ -114,7 +114,7 @@ $message2 = '';
 				</div>
 
 				<div style="border: 1px solid #bbb; margin: 10px; padding: 10px;">
-					<h2 class="caption">Delete User</h2>
+					<h2 class="caption">删除用户</h2>
 
 					<?php
 					if ($delete == 'Delete') {
@@ -123,7 +123,7 @@ $message2 = '';
 								$query = sprintf ("DELETE FROM user WHERE md5(username)=md5('%s')", 
 										$mysql->escape ($existing_user));
 								if ($mysql->query ($query)) {
-									$message2 = "User $existing_user deleted.<br>";
+									$message2 = "用户 $existing_user 已删除.<br>";
 								}
 								else {
 									message ($mysql->error);
@@ -148,15 +148,15 @@ $message2 = '';
 								<p>Are you sure you want to delete the user <?php echo $existing_user; ?> and all it's Bookmarks and Folders?</p>
 								<form action="<?php echo $_SERVER['SCRIPT_NAME'] . "?noconfirm=1"; ?>" method="POST" name="userdelete">
 								<input type="hidden" name="existing_user" value="<?php echo $existing_user; ?>">
-								<input type="submit" name="delete" value="Delete">
-								<input type="button" value=" Cancel " onClick="self.location.href='./admin.php'"> 
+								<input type="submit" name="delete" value="删除">
+								<input type="button" value="取消" onClick="self.location.href='./admin.php'"> 
 								</form>
 								
 								<?php
 							}
 						}
 						else {
-							$message2 = 'User does not exist.';
+							$message2 = '该用户不存在.';
 							list_users ();
 						}
 					}
@@ -202,17 +202,17 @@ $message2 = '';
 				</div>
 
 				<div style="border: 1px solid #bbb; margin: 10px; padding: 10px;">
-						<h2 class="caption">Version</h2>
+						<h2 class="caption">程序版本</h2>
 
 						<table>
 							<tr>
-								<td>This Version:</td>
+								<td>版本号:</td>
 								<td><?php @readfile (ABSOLUTE_PATH . "VERSION"); ?></td>
 							</tr>
 						
 							<tr>
-								<td><a href="http://www.frech.ch/online-bookmarks/" target="_new">Newest Version available:</a></td>
-								<td><a href="http://www.frech.ch/online-bookmarks/" target="_new"><?php echo check_version (); ?></a></td>
+								<td><a href="http://www.frech.ch/online-bookmarks/" target="_new">查看新版本:</a></td>
+								<td><a href="http://www.jackfans.com/products/" target="_new">查看汉化版本</a></td>
 							</tr>
 						</table>
 						

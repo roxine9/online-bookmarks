@@ -10,7 +10,7 @@ $confirm = set_get_string_var ('confirm');
 if ($reg_register) {
 	if ($reg_username != "") {
 					if (check_username ($reg_username)) {
-						echo '<div style="color:red;">$username is an already registered user. Choose another one.</div>'."\n";
+						echo '<div style="color:red;">用户名$username已被注册，请选择其他用户名注册。</div>'."\n";
 						$username = false;
 					}
 					else {
@@ -18,14 +18,14 @@ if ($reg_register) {
 					}
 	}
 	else {
-		echo '<div style="color:red;">Please enter a Username.</div>'."\n";
+		echo '<div style="color:red;">请输入用户名</div>'."\n";
 		$username = false;
 	}
 
 	if (isset ($_POST['reg_password1']) && $_POST['reg_password1'] != "" &&
 		  isset ($_POST['reg_password2']) && $_POST['reg_password2'] != "") {
 		if (md5 ($_POST['reg_password1']) != md5 ($_POST['reg_password2'])) {
-			echo '<div style="color:red;">Passwords do not match.</div>'."\n";
+			echo '<div style="color:red;">密码不相符</div>'."\n";
 			$password = false;
 		}
 		else {
@@ -33,7 +33,7 @@ if ($reg_register) {
 		}
 	}
 	else {
-		echo '<div style="color:red;">Please fill out both password fields.</div>'."\n";
+		echo '<div style="color:red;">请两次输入密码</div>'."\n";
 		$password = false;
 	}
 
@@ -42,7 +42,7 @@ if ($reg_register) {
 			$query = "SELECT COUNT(*) AS result FROM user WHERE email='$reg_email'";
 			if ($mysql->query ($query)) {
 				if (mysql_result ($result, 0) > 0) {
-					echo '<div style="color:red;">A User Account with this email address aready exists.</div>'."\n";
+					echo '<div style="color:red;">该邮件地址已注册</div>'."\n";
 					$email = false;
 				}
 				else {
@@ -55,12 +55,12 @@ if ($reg_register) {
 			}
 		}
 		else {
-			echo '<div style="color:red;">Email address is invalid.</div>'."\n";
+			echo '<div style="color:red;">无效的邮件地址</div>'."\n";
 			$email = false;
 		}
 	}
 	else {
-		echo '<div style="color:red;">Please enter a valid email address.</div>'."\n";
+		echo '<div style="color:red;">请输入有效的邮件地址</div>'."\n";
 		$email = false;
 	}
 
@@ -76,12 +76,12 @@ if ($reg_register) {
 			# user geschickt und f黵 die verifikation der registrierung gebraucht.
 			$key = md5 ($username . $secret);
 
-			$headers = "From: noreply@yourdomain.com\r\n" .
-			$subject = 'Your registration at yourdomain.com';
-			$message  = "Hi $username,\r\n\r\n";
-			$message .= "This email confirms the creation of your Online-Bookmarks user account. ";
-			$message .= "Your username is '$username'. For security reasons your password is not ";
-			$message .= "included in this email. To activate your account, visit the following URL:\r\n\r\n";
+			$headers = "来自: noreply@yourdomain.com\r\n" .
+			$subject = '你在 yourdomain.com 网络收藏夹的注册信息';
+			$message  = "你好 $username,\r\n\r\n";
+			$message .= "以下是你在我站 网络收藏夹 的注册信息： ";
+			$message .= "你的用户名： '$username'。 为确保安全，你的注册密码不在此邮件中。 ";
+			$message .= "激活你的帐户，请点击链接 URL:\r\n\r\n";
 			$message .= "http://www.yourdomain.com/register.php?confirm=$key\r\n\r\n";
 			$message .= "In case of complications regarding this user account registration, ";
 			$message .= "please contact support@yourdomain.com\r\n\r\n";
@@ -89,8 +89,7 @@ if ($reg_register) {
 
 			mail($email, $subject, $message, $headers);
 
-			echo "  you have been successfully registered.
-				Read your email and click the link to activate your account.";
+			echo "  注册成功。请查阅你的邮箱，并激活注册邮件中的链接。";
 		}
 		else {
 			echo mysql_error ();
@@ -109,7 +108,7 @@ else if ($confirm != '' && strlen ($confirm) === 32) {
 		$username = mysql_result ($result, 0);
 		$query = "UPDATE user SET active='1' WHERE username='$username' AND active='0'";
 		if (mysql_query ($query)) {
-			echo "You are now registered. Happy bookmarking!";
+			echo "注册成功。";
 		}
 	}
 	else {
@@ -127,24 +126,24 @@ function display_register_form () {
 <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" name="loginform">
 <table border="0">
 	<tr>
-		<td>Username:</td>
+		<td>用户名:</td>
 		<td><input name="reg_username" type="text" value=""></td>
 	</tr>
 	<tr>
-		<td>Password:</td>
+		<td>密码:</td>
 		<td><input name="reg_password1" type="password" value=""></td>
 	</tr>
 	<tr>
-		<td>Password Verification:</td>
+		<td>再次输入:</td>
 		<td><input name="reg_password2" type="password" value=""></td>
 	</tr>
 	<tr>
-		<td>Email Address:</td>
+		<td>电子邮件:</td>
 		<td><input name="reg_email" type="text" value=""></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="submit" value="Register" name="reg_register"></td>
+		<td><input type="submit" value="确认注册" name="reg_register"></td>
 	</tr>
 </table>
 </form>
@@ -154,9 +153,9 @@ function display_register_form () {
 
 function display_register_additional_text () {
 	?>
-	<p>Please provide the information bellow to register.</p>
+	<p>请填写注册信息。</p>
 
-	<p>If you are already a registered user, <a class="orange" href="./index.php">you can log in here.</a></p>
+	<p>如果已经是注册会员，请<a class="orange" href="./index.php">登录</a>。</p>
 	<?php
 }
 

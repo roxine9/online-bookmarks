@@ -9,22 +9,22 @@ logged_in_only ();
 <div style="min-width: <?php echo 230 + $settings['column_width_folder']; ?>px;">
 	<!-- Menu starts here. -->
 	<div id="menu">
-		<h2 class="nav">Bookmarks</h2>
+		<h2 class="nav">书签页</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="./index.php">我的书签</a></li>
+		  <li><a href="./shared.php">共享书签</a></li>
 		</ul>
 	
-		<h2 class="nav">Tools</h2>
+		<h2 class="nav">工具栏</h2>
 		<ul class="nav">
 			<?php if (admin_only ()) { ?>
-			<li><a href="./admin.php">Admin</a></li>
+			<li><a href="./admin.php">管理员</a></li>
 			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
+			<li><a href="./import.php">导入书签</a></li>
+			<li><a href="./export.php">导出书签</a></li>
 			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
+			<li><a href="./settings.php">系统设置</a></li>
+			<li><a href="./index.php?logout=1">退出</a></li>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -37,7 +37,7 @@ logged_in_only ();
 
 if (!isset ($_FILES['importfile']['tmp_name']) || $_FILES['importfile']['tmp_name'] == null){
 	# get the browser type for default setting below if possible
-	if(preg_match("/opera/i", $_SERVER['HTTP_USER_AGENT'])){
+	if( eregi ("opera", $_SERVER['HTTP_USER_AGENT'])){
 		$default_browser = "opera";
 	}
 	else{
@@ -49,19 +49,19 @@ if (!isset ($_FILES['importfile']['tmp_name']) || $_FILES['importfile']['tmp_nam
 	  <table border="0">
 	    <tr>
 	      <td>
-	        from Browser:
+	        选择浏览器类型:
 	      </td>
 	      <td>
 	        <select name="browser">
-	          <option value="netscape"<?php if ($default_browser=="netscape"){echo " selected";} ?>>Netscape / Mozilla / IE</option>
-	          <option value="opera"<?php if ($default_browser=="opera"){echo " selected";} ?>>Opera .adr</option>
+	          <option value="netscape"<?php if ($default_browser=="netscape"){echo " selected";} ?>>Netscape / Mozilla / IE 浏览器</option>
+	          <option value="opera"<?php if ($default_browser=="opera"){echo " selected";} ?>>Opera 浏览器</option>
 	        </select>
 	      </td>
 	    </tr>
 	
 	    <tr>
 	      <td>
-	        select File:
+	        选择导入文件:
 	      </td>
 	      <td>
 	        <input type="file" name="importfile">
@@ -69,7 +69,7 @@ if (!isset ($_FILES['importfile']['tmp_name']) || $_FILES['importfile']['tmp_nam
 	    </tr>
 
 		<tr>
-			<td>Character encoding:</td>
+			<td>选择字符编码:</td>
 			<td>
 				<select name="charset">
 				<?php
@@ -85,25 +85,25 @@ if (!isset ($_FILES['importfile']['tmp_name']) || $_FILES['importfile']['tmp_nam
 		</tr>
 
 		<tr>
-			<td>Make them:</td>
+			<td>是否共享:</td>
 			<td>
 				<select name="public">
-				<option value="1">public</option>
-				<option value="0" selected>private</option>
+				<option value="1">共享</option>
+				<option value="0" selected>私人</option>
 				</select>
 			</td>
 		</tr>
 
 	    <tr>
 	      <td valign="top">
-	        Destination Folder:
+	        目标文件夹:
 	      </td>
 	      <td>
 	    <div style="width:<?php echo $column_width_folder; ?>; height:350px; overflow:auto;">
 	
 		<?php
 		require_once (ABSOLUTE_PATH . "folders.php");
-		$tree = new folder;
+		$tree = & new folder;
 		$tree->make_tree (0);
 		$tree->print_tree ();
 		?>
@@ -114,10 +114,10 @@ if (!isset ($_FILES['importfile']['tmp_name']) || $_FILES['importfile']['tmp_nam
 	
 	    <tr>
 	      <td>
-	      	<p><input type="button" value=" New Folder " onClick="self.location.href='javascript:foldernew(<?php echo $folderid; ?>)'"></p>
+	      	<p><input type="button" value="新建文件夹" onClick="self.location.href='javascript:foldernew(<?php echo $folderid; ?>)'"></p>
 	        <input type="hidden" name="parentfolder" value="<?php echo $folderid; ?>">
-	        <input type="submit" value="Import">
-	        <input type="button" value=" Cancel " onClick="self.location.href='./index.php'">
+	        <input type="submit" value="确定">
+	        <input type="button" value="取消" onClick="self.location.href='./index.php'">
 	      </td>
 	      <td>
 	      </td>
@@ -130,11 +130,11 @@ if (!isset ($_FILES['importfile']['tmp_name']) || $_FILES['importfile']['tmp_nam
 }
 else{
 	if(!isset($_POST['browser']) || $_POST['browser'] == ""){
-		message ("no browser selected");
+		message ("请选择浏览器类型");
 	}
 
 	$parentfolder = set_post_parentfolder ();
-	$import = new import;
+	$import = & new import;
 
 	if ($_POST['browser'] == "opera") {
 		$import->import_opera ();
@@ -163,7 +163,7 @@ class import {
 		# open the importfile
 		$this->fp = fopen ($_FILES['importfile']['tmp_name'], "r");
 		if ($this->fp == null){
-			message ("Failed to open file");
+			message ("文件导入失败");
 		}
 
 		$this->charset = set_post_charset ();

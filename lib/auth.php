@@ -113,29 +113,29 @@ class auth {
 		?>
 
 			<form name="loginform" method="POST" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
-			<center>
+			<center><br /><br />
 				<table border="0"  style="text-align:left;">
 					<tr>
-						<td>Username:</td>
+						<td>用户名:</td>
 						<td><input name="username" type="text" value="" tabindex="1"></td>
 					</tr>
 					<tr>
-						<td>Password:</td>
+						<td>密  码:</td>
 						<td><input name="password" type="password" value="" tabindex="2"></td>
 					</tr>
 					<tr>
-						<td>Remember login:</td>
+						<td>记住我:</td>
 						<td><input type="checkbox" name="remember" tabindex="3"></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td><input type="submit" value="Login" tabindex="4"></td>
+					  <td align="right" valign="middle"><input type="submit" value="登录" tabindex="4"></td>
 					</tr>
 				</table>
 
 				<?php
 				if (strtolower (basename ($_SERVER['SCRIPT_NAME'])) == "index.php") {
-					echo '<br><div><a href="./shared.php">Users Sharing Bookmarks</a></div>';
+					echo '<br><div><a href="./shared.php"><font color=red>查阅共享书签</font></a> | 公共帐户：User （密码User）</div>';
 				}
 				?>
 

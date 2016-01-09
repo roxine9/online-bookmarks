@@ -7,7 +7,7 @@ require_once (ABSOLUTE_PATH . "lib/lib.php");
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>Online-Bookmarks</title>
+		<title>网络收藏夹-JackFans.com汉化版本安装</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	</head>
 <body>
@@ -45,7 +45,7 @@ function create_table_bookmark () {
 			url char(200) NOT NULL default '',
 			description mediumtext default NULL,
 			private enum('0','1') default NULL,
-			date timestamp NOT NULL,
+			date timestamp(14) NOT NULL,
 			childof int(11) NOT NULL default '0',
 			id int(11) NOT NULL auto_increment,
 			deleted enum('0','1') NOT NULL default '0',
@@ -53,7 +53,7 @@ function create_table_bookmark () {
 			public enum('0','1') NOT NULL default '0',
 			PRIMARY KEY (id),
 			FULLTEXT KEY title (title,url,description)
-		) ENGINE=MyISAM";
+		) TYPE=MyISAM";
 
 	if (mysql_query ($query)) {
 		return true;
@@ -72,7 +72,7 @@ function create_table_folder () {
 			deleted enum('0','1') NOT NULL default '0',
 			public enum('0','1') NOT NULL default '0',
 			UNIQUE KEY id (id)
-		) ENGINE=MyISAM;";
+		) TYPE=MyISAM;";
 
 	if (mysql_query ($query)) {
 		return true;
@@ -107,7 +107,7 @@ function create_table_user () {
 			simple_tree_mode enum('0','1') NOT NULL default '0',
 			show_public enum('0','1') NOT NULL default '1',
 			UNIQUE KEY id (username)
-		) ENGINE=MyISAM;";
+		) TYPE=MyISAM;";
 
 	if (mysql_query ($query)) {
 		return true;
@@ -199,72 +199,72 @@ function html_db () {
 	       $cookie_expire;
 	?>
 	
-	<h3>Database connection:</h3>
+	<h3>数据库连接设置:只要数据库主机、数据库名称、用户名、密码填写正确即可，其他不用管！</h3>
 
 	<form method="POST" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
 	<table>
 		<tr>
-			<td>Database hostname:</td>
+			<td>数据库主机（一般都用localhost）:</td>
 			<td><input type="text" name="mysql_hostname" value="<?php echo $mysql_hostname; ?>"></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Database name:</td>
+			<td>数据库名称:</td>
 			<td><input type="text" name="mysql_db_name" value="<?php echo $mysql_db_name; ?>"></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Database username:</td>
+			<td>数据库用户名:</td>
 			<td><input type="text" name="mysql_db_username" value="<?php echo $mysql_db_username; ?>"></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Database password:</td>
+			<td>数据库用户密码:</td>
 			<td><input type="password" name="mysql_db_password" value=""></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Create new database:</td>
+			<td>新建数据库:</td>
 			<td><input type="checkbox" name="mysql_db_create"></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>using Superuser account:</td>
+			<td>使用超级帐户:</td>
 			<td><input type="text" name="mysql_db_su_username" value="<?php echo $mysql_db_su_username; ?>"></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Superuser password:</td>
+			<td>超级帐户密码:</td>
 			<td><input type="password" name="mysql_db_su_password" value=""></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td><h3>Cookie settings:</h3></td>
+			<td><h3>Cookie设置:</h3></td>
 			<td></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Cookie name:</td>
+			<td>Cookie名称:</td>
 			<td><input type="text" name="cookie_name" value="<?php echo $cookie_name; ?>"></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Cookie domain:</td>
+			<td>Cookie域名:</td>
 			<td><input type="text" name="cookie_domain" value="<?php echo $cookie_domain; ?>"></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Cookie path:</td>
+			<td>Cookie路径:</td>
 			<td><input type="text" name="cookie_path" value="<?php echo $cookie_path; ?>"></td>
 			<td></td>
 		</tr>
@@ -464,10 +464,6 @@ $cookie = array (
 	\'expire\' => time() + ' . $cookie_expire . ',
 );
 
-# For a List of Supported Timezones see:
-# http://www.php.net/manual/en/timezones.php
-date_default_timezone_set(\'Europe/Zurich\');
-
 # Feel free to add values to this list as you like
 # according to the PHP documentation 
 # http://www.php.net/manual/en/function.date.php
@@ -508,15 +504,15 @@ $delete_image = \'&lt;img src="./images/delete.gif" title="%s" alt=""&gt;\';
 $delimiter = "/";
 ?&gt;';
 
-			echo '<p>Paste the configuration shown below in the configuration file <span style="font-family:courier">./config/config.php</span></p>' . "\n";
+			echo '<p>在<span style="font-family:courier">./config</span>文件夹中新建一个名为config的php文件，并且复制下面代码框中的内容到/config/config.php中就能正常使用程序了。</p>' . "\n";
 			if ($admin_message != '') {
 				echo $admin_message;
 			}
-			print_msg ("<p>IMPORTANT! Do not forget to remove this install.php script.</p>");
+			print_msg ("<p>注意! 安装完成后别忘了先移除install.php文件 script.</p>");
 			echo '<pre style="background-color: #E0E0E0; border: 1px black solid; padding: 20px">';
 			echo $config;
 			echo "</pre>\n";
-			echo '<a href="./index.php">Now go Bookmark...</a>';
+			echo '<a href="./index.php">现在就使用...初始管理员用户名和密码都是admin</a>';
 		}
 	}
 }
